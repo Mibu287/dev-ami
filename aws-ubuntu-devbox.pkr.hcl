@@ -7,6 +7,14 @@ packer {
   }
 }
 
+variable "golang_version" {
+  type = string
+}
+
+variable "python_version" {
+  type = string
+}
+
 source "amazon-ebs" "ubuntu" {
   ami_name      = "awesome-devbox-{{timestamp}}"
   instance_type = "t4g.large"
@@ -28,6 +36,7 @@ build {
   sources = [
     "source.amazon-ebs.ubuntu"
   ]
+
 
   // Update and upgrade the distro
   provisioner "shell" {
@@ -53,6 +62,16 @@ build {
     ]
   }
 
+  // Install Golang
+  provisioner "shell" {
+    inline = [
+      "https://go.dev/dl/go${var.golang_version}.linux-arm64.tar.gz",
+      "sudo tar -C /usr/local -xzf go${var.golang_version}.linux-arm64.tar.gz",
+      "echo '#Golang bin' >> ~/.zshrc",
+      "echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> ~/.zshrc",
+    ]
+  }
+
   //Install Docker
   provisioner "shell" {
     inline = [
@@ -62,11 +81,11 @@ build {
       "sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc",
       "sudo chmod a+r /etc/apt/keyrings/docker.asc",
       <<EOT
-              echo \
-                "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-                  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-                    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-                    EOT
+      echo \
+          "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+          $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+          sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+      EOT
       ,
       "sudo apt-get update",
       "sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin -y",
@@ -88,7 +107,7 @@ build {
       "echo 'export PYENV_ROOT=\"$HOME/.pyenv\"' >> ~/.zshrc",
       "echo '[[ -d $PYENV_ROOT/bin ]] && export PATH=\"$PYENV_ROOT/bin:$PATH\"' >> ~/.zshrc",
       "echo 'eval \"$(pyenv init -)\"' >> ~/.zshrc",
-      "PYENV_ROOT=\"$HOME/.pyenv\" PATH=\"$HOME/.pyenv/bin:$PATH\" pyenv install 3.11",
+      "PYENV_ROOT=\"$HOME/.pyenv\" PATH=\"$HOME/.pyenv/bin:$PATH\" pyenv install ${var.python_version}",
     ]
   }
 }
