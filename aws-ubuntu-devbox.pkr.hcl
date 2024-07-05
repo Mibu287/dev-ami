@@ -19,6 +19,10 @@ variable "nvm_version" {
   type = string
 }
 
+variable "zig_version" {
+  type = string
+}
+
 variable "source_image" {
   type = map(string)
 }
@@ -177,6 +181,18 @@ build {
       "rm -f $HOME/llvm.sh",
       "echo '#LLVM' >> ~/.zshrc",
       "echo 'export PATH=/usr/lib/llvm-17/bin:$PATH' >> $HOME/.zshrc",
+    ]
+  }
+
+  // Install Zig
+  provisioner "shell" {
+    inline = [
+      "wget https://ziglang.org/download/${var.zig_version}/zig-linux-aarch64-${var.zig_version}.tar.xz",
+      "tar -xf zig-linux-aarch64-${var.zig_version}.tar.xz",
+      "sudo mv zig-linux-aarch64-${var.zig_version}.tar.xz /usr/local",
+      "rm -f zig-linux-aarch64-${var.zig_version}.tar.xz",
+      "echo '#Zig' >> ~/.zshrc",
+      "echo 'export PATH=/usr/local/zig-linux-aarch64-${var.zig_version}:$PATH' >> $HOME/.zshrc",
     ]
   }
 
