@@ -148,6 +148,7 @@ build {
       "cd $HOME/.nvm && git checkout v${var.nvm_version}",
       ". $HOME/.nvm/nvm.sh",
       "nvm install --lts",
+      "nvm use --lts",
 
       "echo 'export NVM_DIR=\"$HOME/.nvm\"' >> ~/.zshrc",
       "echo '[ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\"' >> ~/.zshrc",
