@@ -124,7 +124,7 @@ build {
       "PYENV_ROOT=\"$HOME/.pyenv\" PATH=\"$HOME/.pyenv/bin:$PATH\" pyenv install ${var.python_version}",
       <<EOT
       PYENV_ROOT="$HOME/.pyenv" PATH="$HOME/.pyenv/bin:$PATH" \
-        pyenv virtualenv default ${var.python_version} \
+        pyenv virtualenv ${var.python_version} default \
         && pyenv global default \
         && pip install --upgrade pip \
         && pip install requests numpy pandas polars duckdb scikit-learn cython matplotlib seaborn ipython jupyter
