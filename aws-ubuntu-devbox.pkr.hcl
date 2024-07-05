@@ -23,6 +23,10 @@ variable "instance_type" {
   type = string
 }
 
+variable "region" {
+  type = string
+}
+
 source "amazon-ebs" "ubuntu" {
   ami_name      = "awesome-devbox-{{timestamp}}"
   instance_type = "${var.instance_type}"
@@ -118,6 +122,14 @@ build {
       "echo '[[ -d $PYENV_ROOT/bin ]] && export PATH=\"$PYENV_ROOT/bin:$PATH\"' >> ~/.zshrc",
       "echo 'eval \"$(pyenv init -)\"' >> ~/.zshrc",
       "PYENV_ROOT=\"$HOME/.pyenv\" PATH=\"$HOME/.pyenv/bin:$PATH\" pyenv install ${var.python_version}",
+      <<EOT
+      PYENV_ROOT="$HOME/.pyenv" PATH="$HOME/.pyenv/bin:$PATH" \
+        pyenv virtualenv default ${var.python_version} \
+        && pyenv global default \
+        && pip install --upgrade pip \
+        && pip install requests numpy pandas polars duckdb scikit-learn cython matplotlib seaborn ipython jupyter
+      EOT
+
     ]
   }
 }
