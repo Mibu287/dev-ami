@@ -207,6 +207,8 @@ build {
       "sudo apt-get update",
       "sudo apt-get -y install cuda-toolkit-12-5",
       "rm -f cuda-repo-ubuntu2204-12-5-local_12.5.1-555.42.06-1_arm64.deb"
+      "sudo apt-get install -y nvidia-driver-555-open",
+      "sudo apt-get install -y cuda-drivers-555",
 
       "echo '#CUDA Toolkit' >> ~/.zshrc",
       "echo 'export PATH=/usr/local/cuda/bin:$PATH' >> $HOME/.zshrc",
