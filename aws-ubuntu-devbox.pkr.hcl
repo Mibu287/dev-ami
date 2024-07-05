@@ -168,6 +168,18 @@ build {
     ]
   }
 
+  // Install LLVM tools
+  provisioner "shell" {
+    inline = [
+      "wget https://apt.llvm.org/llvm.sh -o $HOME/llvm.sh",
+      "chmod +x $HOME/llvm.sh",
+      "sudo $HOME/llvm.sh 17 all",
+      "rm -f $HOME/llvm.sh",
+      "echo '#LLVM' >> ~/.zshrc",
+      "echo 'export PATH=/usr/lib/llvm-17/bin:$PATH' >> $HOME/.zshrc",
+    ]
+  }
+
   // Install CUDA toolkit
   provisioner "shell" {
     inline = [
