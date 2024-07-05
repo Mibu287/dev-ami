@@ -81,7 +81,7 @@ build {
     inline = [
       "sudo apt install -y zsh",
       "sudo chsh -s $(which zsh) $USER",
-      "sh -c '$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)'",
+      "KEEP_ZSHRC='yes' sh -c '$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)'",
     ]
   }
 
