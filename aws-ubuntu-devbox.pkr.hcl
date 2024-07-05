@@ -15,6 +15,10 @@ variable "python_version" {
   type = string
 }
 
+variable "nvm_version" {
+  type = string
+}
+
 variable "source_image" {
   type = map(string)
 }
@@ -53,10 +57,12 @@ build {
   // Update and upgrade the distro
   provisioner "shell" {
     inline = [
+      "echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections",
+      "sudo apt update",
+      "sudo apt upgrade -y -q",
+      "sudo apt autoremove -y",
       <<EOT
-      sudo apt update && \
-      DEBIAN_FRONTEND=noninteractive sudo apt upgrade -y && \
-      DEBIAN_FRONTEND=noninteractive sudo apt install -y \
+      sudo apt install -y \
           build-essential gcc g++ \
           libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
           libsqlite3-dev libncurses5-dev libncursesw5-dev xz-utils \
@@ -118,18 +124,34 @@ build {
   provisioner "shell" {
     inline = [
       "curl https://pyenv.run | zsh",
-      "echo 'export PYENV_ROOT=\"$HOME/.pyenv\"' >> ~/.zshrc",
-      "echo '[[ -d $PYENV_ROOT/bin ]] && export PATH=\"$PYENV_ROOT/bin:$PATH\"' >> ~/.zshrc",
-      "echo 'eval \"$(pyenv init -)\"' >> ~/.zshrc",
-      "PYENV_ROOT=\"$HOME/.pyenv\" PATH=\"$HOME/.pyenv/bin:$PATH\" pyenv install ${var.python_version}",
-      <<EOT
-      PYENV_ROOT="$HOME/.pyenv" PATH="$HOME/.pyenv/bin:$PATH" \
-        pyenv virtualenv ${var.python_version} default \
-        && pyenv global default \
-        && pip install --upgrade pip \
-        && pip install requests numpy pandas polars duckdb scikit-learn cython matplotlib seaborn ipython jupyter
-      EOT
+      "echo 'export PYENV_ROOT=\"$HOME/.pyenv\"' >> $HOME/.zshrc",
+      "echo '[[ -d $PYENV_ROOT/bin ]] && export PATH=\"$PYENV_ROOT/bin:$PATH\"' >> $HOME/.zshrc",
+      "echo 'eval \"$(pyenv init -)\"' >> $HOME/.zshrc",
+      "echo 'eval \"$(pyenv virtualenv-init -)\"' >> $HOME/.zshrc",
 
+      "export PYENV_ROOT=$HOME/.pyenv",
+      "export PATH=\"$PYENV_ROOT/bin:$PATH\"",
+      "eval \"$(pyenv init -)\"",
+      "eval \"$(pyenv virtualenv-init -)\"",
+      "pyenv install ${var.python_version}",
+      "pyenv virtualenv ${var.python_version} default",
+      "pyenv global default",
+      "pip install --upgrade pip",
+      "pip install requests numpy pandas polars duckdb scikit-learn cython matplotlib seaborn ipython jupyter"
+    ]
+  }
+
+  // Install nvm and nodejs
+  provisioner "shell" {
+    inline = [
+      "git clone https://github.com/nvm-sh/nvm.git $HOME/.nvm",
+      "cd $HOME/.nvm && git checkout v${var.nvm_version}",
+      ". $HOME/.nvm/nvm.sh",
+      "nvm install --lts",
+
+      "echo 'export NVM_DIR=\"$HOME/.nvm\"' >> ~/.zshrc",
+      "echo '[ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\"' >> ~/.zshrc",
+      "echo '[ -s \"$NVM_DIR/bash_completion\" ] && \\. \"$NVM_DIR/bash_completion\"' >> ~/.zshrc",
     ]
   }
 }

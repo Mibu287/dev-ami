@@ -1,6 +1,7 @@
 golang_version = "1.22.4"
 python_version = "3.11"
-region = "ap-southeast-1"
+nvm_version    = "0.39.7"
+region         = "ap-southeast-1"
 source_image = {
   image_id            = "ami-0a74328eb0d575ee1"
   root_device_type    = "ebs"
