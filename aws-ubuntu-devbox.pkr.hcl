@@ -118,24 +118,6 @@ build {
     ]
   }
 
-  // Install Rust
-  provisioner "shell" {
-    inline = [
-      "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | zsh -s -- -y",
-      "echo '. \"$HOME/.cargo/env\"' >> $HOME/.zshrc",
-      ". \"$HOME/.cargo/env\"",
-      <<EOT
-      cargo install \
-          exa bat ripgrep fd-find du-dust \
-          tokei cargo-expand cargo-edit cargo-outdated \
-          cargo-tree cargo-lambda tauri-cli maturin \
-          cargo-watch cargo-make cargo-generate \
-          cargo-modules cargo-asm cargo-bloat cargo-deb \
-          cargo-zigbuild cargo-udeps 
-      EOT
-    ]
-  }
-
   // Install pyevn and python
   provisioner "shell" {
     inline = [
@@ -193,6 +175,25 @@ build {
       "rm -f zig-linux-aarch64-${var.zig_version}.tar.xz",
       "echo '#Zig' >> ~/.zshrc",
       "echo 'export PATH=/usr/local/zig-linux-aarch64-${var.zig_version}:$PATH' >> $HOME/.zshrc",
+    ]
+  }
+
+  // Install Rust
+  provisioner "shell" {
+    inline = [
+      "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | zsh -s -- -y",
+      "echo '. \"$HOME/.cargo/env\"' >> $HOME/.zshrc",
+      ". \"$HOME/.cargo/env\"",
+      <<EOT
+      RUSTFLAGS="-C linker=clang -C link-arg=-fuse-ld=mold" \
+      cargo install \
+          exa bat ripgrep fd-find du-dust \
+          tokei cargo-expand cargo-edit cargo-outdated \
+          cargo-tree cargo-lambda tauri-cli maturin \
+          cargo-watch cargo-make cargo-generate \
+          cargo-modules cargo-asm cargo-bloat cargo-deb \
+          cargo-zigbuild cargo-udeps 
+      EOT
     ]
   }
 
