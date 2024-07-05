@@ -207,7 +207,7 @@ build {
       "sudo cp /var/cuda-repo-ubuntu2204-12-5-local/cuda-*-keyring.gpg /usr/share/keyrings/",
       "sudo apt-get update",
       "sudo apt-get -y install cuda-toolkit-12-5",
-      "rm -f cuda-repo-ubuntu2204-12-5-local_12.5.1-555.42.06-1_arm64.deb"
+      "rm -f cuda-repo-ubuntu2204-12-5-local_12.5.1-555.42.06-1_arm64.deb",
       "sudo apt-get install -y nvidia-driver-555-open",
       "sudo apt-get install -y cuda-drivers-555",
 
