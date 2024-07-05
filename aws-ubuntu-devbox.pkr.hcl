@@ -15,20 +15,28 @@ variable "python_version" {
   type = string
 }
 
+variable "source_image" {
+  type = map(string)
+}
+
+variable "instance_type" {
+  type = string
+}
+
 source "amazon-ebs" "ubuntu" {
   ami_name      = "awesome-devbox-{{timestamp}}"
-  instance_type = "t4g.large"
-  region        = "ap-southeast-1"
+  instance_type = "${var.instance_type}"
+  region        = "${var.region}"
   source_ami_filter {
     filters = {
-      image-id            = "ami-0a74328eb0d575ee1"
-      root-device-type    = "ebs"
-      virtualization-type = "hvm"
+      image-id            = "${var.source_image.image_id}"
+      root-device-type    = "${var.source_image.root_device_type}"
+      virtualization-type = "${var.source_image.virtualization_type}"
     }
     most_recent = true
-    owners      = ["099720109477"]
+    owners      = ["${var.source_image.owner}"]
   }
-  ssh_username = "ubuntu"
+  ssh_username = "${var.source_image.ssh_username}"
 }
 
 build {
@@ -41,10 +49,10 @@ build {
   // Update and upgrade the distro
   provisioner "shell" {
     inline = [
-      "sudo apt update",
-      "sudo apt upgrade -y",
       <<EOT
-      sudo apt install -y \
+      sudo apt update && \
+      DEBIAN_FRONTEND=noninteractive sudo apt upgrade -y && \
+      DEBIAN_FRONTEND=noninteractive sudo apt install -y \
           build-essential gcc g++ \
           libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
           libsqlite3-dev libncurses5-dev libncursesw5-dev xz-utils \
@@ -65,8 +73,10 @@ build {
   // Install Golang
   provisioner "shell" {
     inline = [
-      "https://go.dev/dl/go${var.golang_version}.linux-arm64.tar.gz",
+      "wget https://go.dev/dl/go${var.golang_version}.linux-arm64.tar.gz",
       "sudo tar -C /usr/local -xzf go${var.golang_version}.linux-arm64.tar.gz",
+      "rm go${var.golang_version}.linux-arm64.tar.gz",
+      "mkdir -p $HOME/go/bin",
       "echo '#Golang bin' >> ~/.zshrc",
       "echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> ~/.zshrc",
     ]
@@ -100,7 +110,7 @@ build {
     ]
   }
 
-  // Install pyevn and python 3.11
+  // Install pyevn and python
   provisioner "shell" {
     inline = [
       "curl https://pyenv.run | zsh",
