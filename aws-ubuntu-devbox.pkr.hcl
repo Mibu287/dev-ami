@@ -122,12 +122,12 @@ build {
       ". \"$HOME/.cargo/env\"",
       <<EOT
       cargo install \
-          exa bat ripgrep fd-find procs du-dust \
+          exa bat ripgrep fd-find du-dust \
           tokei cargo-expand cargo-edit cargo-outdated \
           cargo-tree cargo-lambda tauri-cli maturin \
           cargo-watch cargo-make cargo-generate \
           cargo-modules cargo-asm cargo-bloat cargo-deb \
-          cargo-zigbuild cargo-geiger cargo-udeps 
+          cargo-zigbuild cargo-udeps 
       EOT
     ]
   }
