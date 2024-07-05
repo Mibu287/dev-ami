@@ -117,6 +117,9 @@ build {
   provisioner "shell" {
     inline = [
       "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | zsh -s -- -y",
+      "echo 'export PATH=$PATH:$HOME/.cargo/bin' >> $HOME/.zshrc",
+      "source $HOME/.zshrc",
+      "cargo install exa bat ripgrep fd-find procs du-dust tokei cargo-expand cargo-edit cargo-outdated cargo-tree cargo-lambda tauri-cli",
     ]
   }
 
