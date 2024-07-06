@@ -48,6 +48,12 @@ source "amazon-ebs" "ubuntu" {
     most_recent = true
     owners      = ["${var.source_image.owner}"]
   }
+  launch_block_device_mappings {
+    device_name = "/dev/sda1"
+    encrypted   = true
+    volume_size = 32
+  }
+
   ssh_username = "${var.source_image.ssh_username}"
 }
 
