@@ -57,7 +57,6 @@ build {
     "source.amazon-ebs.ubuntu"
   ]
 
-
   // Update and upgrade the distro
   provisioner "shell" {
     inline = [
@@ -72,16 +71,31 @@ build {
           libsqlite3-dev libncurses5-dev libncursesw5-dev xz-utils \
           tk-dev libffi-dev liblzma-dev openssl htop tree neofetch \
           ninja-build cmake moreutils netcat mold
-     EOT
+      EOT
     ]
   }
 
   // Install ZSH
+  provisioner "file" {
+    source      = "config-files/zshrc"
+    destination = "$HOME/.zshrc"
+  }
+
+  provisioner "file" {
+    source      = "config-files/p10k.zsh"
+    destination = "$HOME/.p10k.zsh"
+  }
+
   provisioner "shell" {
     inline = [
+      "sudo apt update",
       "sudo apt install -y zsh",
       "sudo chsh -s $(which zsh) $USER",
-      "KEEP_ZSHRC='yes' sh -c '$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)'",
+      "touch $HOME/.zshrc",
+      "wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O $HOME/ohmyzsh-install.sh",
+      "sh $HOME/ohmyzsh-install.sh --keep-zshrc --unattended",
+      "rm -f $HOME/ohmyzsh-install.sh",
+      "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k",
     ]
   }
 
@@ -106,11 +120,11 @@ build {
       "sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc",
       "sudo chmod a+r /etc/apt/keyrings/docker.asc",
       <<EOT
-      echo \
-          "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-          $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-          sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-      EOT
+        echo \
+            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+            $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+            sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        EOT
       ,
       "sudo apt-get update",
       "sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin -y",
@@ -185,15 +199,15 @@ build {
       "echo '. \"$HOME/.cargo/env\"' >> $HOME/.zshrc",
       ". \"$HOME/.cargo/env\"",
       <<EOT
-      RUSTFLAGS="-C linker=clang -C link-arg=-fuse-ld=mold" \
-      cargo install \
-          exa bat ripgrep fd-find du-dust \
-          tokei cargo-expand cargo-edit cargo-outdated \
-          cargo-tree cargo-lambda tauri-cli maturin \
-          cargo-watch cargo-make cargo-generate \
-          cargo-modules cargo-asm cargo-bloat cargo-deb \
-          cargo-zigbuild cargo-udeps 
-      EOT
+        RUSTFLAGS="-C linker=clang -C link-arg=-fuse-ld=mold" \
+        cargo install \
+            exa bat ripgrep fd-find du-dust \
+            tokei cargo-expand cargo-edit cargo-outdated \
+            cargo-tree cargo-lambda tauri-cli maturin \
+            cargo-watch cargo-make cargo-generate \
+            cargo-modules cargo-asm cargo-bloat cargo-deb \
+            cargo-zigbuild cargo-udeps 
+        EOT
     ]
   }
 
