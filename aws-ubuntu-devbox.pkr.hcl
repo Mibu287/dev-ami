@@ -171,7 +171,7 @@ build {
   // Install LLVM tools
   provisioner "shell" {
     inline = [
-      "wget https://apt.llvm.org/llvm.sh -o $HOME/llvm.sh",
+      "wget https://apt.llvm.org/llvm.sh -O $HOME/llvm.sh",
       "chmod +x $HOME/llvm.sh",
       "sudo $HOME/llvm.sh 17 all",
       "rm -f $HOME/llvm.sh",
