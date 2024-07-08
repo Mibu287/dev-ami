@@ -205,8 +205,8 @@ build {
       "echo '. \"$HOME/.cargo/env\"' >> $HOME/.zshrc",
       ". \"$HOME/.cargo/env\"",
       <<EOT
-        RUSTFLAGS="-C linker=clang -C link-arg=-fuse-ld=mold" \
-        cargo install \
+        RUSTFLAGS="-C link-arg=-fuse-ld=mold" \
+        cargo install --locked \
             exa bat ripgrep fd-find du-dust \
             tokei cargo-expand cargo-edit cargo-outdated \
             cargo-tree cargo-lambda tauri-cli maturin \
