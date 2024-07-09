@@ -191,10 +191,12 @@ build {
     inline = [
       "wget https://ziglang.org/download/${var.zig_version}/zig-linux-aarch64-${var.zig_version}.tar.xz",
       "tar -xf zig-linux-aarch64-${var.zig_version}.tar.xz",
-      "sudo mv zig-linux-aarch64-${var.zig_version}.tar.xz /usr/local",
+      "sudo mv zig-linux-aarch64-${var.zig_version} /usr/local",
       "rm -f zig-linux-aarch64-${var.zig_version}.tar.xz",
-      "echo '#Zig' >> ~/.zshrc",
+      "echo '#Zig' >> $HOME/.zshrc",
       "echo 'export PATH=/usr/local/zig-linux-aarch64-${var.zig_version}:$PATH' >> $HOME/.zshrc",
+      "source $HOME/.zshrc",
+      "zig version",
     ]
   }
 
