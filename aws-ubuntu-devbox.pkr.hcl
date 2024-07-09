@@ -239,5 +239,14 @@ build {
       "echo 'export PATH=/usr/local/cuda/bin:$PATH' >> $HOME/.zshrc",
     ]
   }
+
+  // Convinient aliases
+  provisioner "shell" {
+    inline = [
+      "echo '#Convinient aliases' >> ~/.zshrc",
+      "echo 'alias ls=\"ls -lh\"' >> $HOME/.zshrc",
+      "echo 'search=\"grep -HnIire --color=auto\"' >> $HOME/.zshrc",
+    ]
+  }
 }
 
