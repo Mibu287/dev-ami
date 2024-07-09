@@ -142,6 +142,7 @@ build {
   provisioner "shell" {
     inline = [
       "curl https://pyenv.run | zsh",
+      "echo '#pyenv and python' >> ~/.zshrc",
       "echo 'export PYENV_ROOT=\"$HOME/.pyenv\"' >> $HOME/.zshrc",
       "echo '[[ -d $PYENV_ROOT/bin ]] && export PATH=\"$PYENV_ROOT/bin:$PATH\"' >> $HOME/.zshrc",
       "echo 'eval \"$(pyenv init -)\"' >> $HOME/.zshrc",
@@ -168,6 +169,7 @@ build {
       "nvm install --lts",
       "nvm use --lts",
 
+      "echo '#NVM and Nodejs' >> ~/.zshrc",
       "echo 'export NVM_DIR=\"$HOME/.nvm\"' >> ~/.zshrc",
       "echo '[ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\"' >> ~/.zshrc",
       "echo '[ -s \"$NVM_DIR/bash_completion\" ] && \\. \"$NVM_DIR/bash_completion\"' >> ~/.zshrc",
