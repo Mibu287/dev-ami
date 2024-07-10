@@ -166,15 +166,13 @@ build {
       "git clone https://github.com/nvm-sh/nvm.git $HOME/.nvm",
       "cd $HOME/.nvm && git checkout v${var.nvm_version}",
       ". $HOME/.nvm/nvm.sh",
+      "nvm install --lts",
+      "nvm use --lts",
 
       "echo '#NVM and Nodejs' >> ~/.zshrc",
       "echo 'export NVM_DIR=\"$HOME/.nvm\"' >> ~/.zshrc",
       "echo '[ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\"' >> ~/.zshrc",
       "echo '[ -s \"$NVM_DIR/bash_completion\" ] && \\. \"$NVM_DIR/bash_completion\"' >> ~/.zshrc",
-
-      "source $HOME/.zshrc",
-      "nvm install --lts",
-      "nvm use --lts",
     ]
   }
 
