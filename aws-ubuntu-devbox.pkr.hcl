@@ -105,6 +105,22 @@ build {
     ]
   }
 
+  // Install VIM
+  provisioner "file" {
+    source      = "config-files/vimrc"
+    destination = "$HOME/.vimrc"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo add-apt-repository ppa:jonathonf/vim",
+      "sudo apt update",
+      "sudo apt install -y vim",
+      "curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim",
+      "vim -c '+:PlugInstall' -c '+:qa!'",
+    ]
+  }
+
   // Install Golang
   provisioner "shell" {
     inline = [
