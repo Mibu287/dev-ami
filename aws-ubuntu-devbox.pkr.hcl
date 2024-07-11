@@ -249,7 +249,8 @@ build {
             cargo-tree cargo-lambda tauri-cli maturin \
             cargo-watch cargo-make cargo-generate \
             cargo-modules cargo-asm cargo-bloat cargo-deb \
-            cargo-zigbuild cargo-udeps 
+            cargo-zigbuild cargo-udeps \
+            sccache
         EOT
     ]
   }
