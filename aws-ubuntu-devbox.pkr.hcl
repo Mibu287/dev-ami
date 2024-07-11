@@ -189,7 +189,13 @@ build {
       "pyenv virtualenv ${var.python_version} default",
       "pyenv global default",
       "pip install --upgrade pip",
-      "pip install requests numpy pandas polars duckdb scikit-learn cython matplotlib seaborn ipython jupyter"
+      <<EOT
+      pip install \
+        requests aiohttp conan \
+        pandas polars duckdb \
+        cython matplotlib seaborn ipython jupyter \
+        scikit-learn xgboost lightgbm catboost
+      EOT
     ]
   }
 
