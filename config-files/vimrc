@@ -53,8 +53,7 @@ let g:formatters_python = ['py_black']
 let g:python_highlight_all = 1
 
 "CSharp Formatter
-let g:formatdef_custom_csharp = '"clang-format --assume-filename=main.cs
---style=file"'
+let g:formatdef_custom_csharp = '"clang-format --assume-filename=main.cs --style=file"'
 let g:formatters_cs = ['custom_csharp']
 
 "Scala Formatter
@@ -75,8 +74,7 @@ let g:formatdef_custom_rust = '"rustfmt --force"'
 let g:formatters_swift = ['custom_rust']
 
 "Swift source formatter
-let g:formatdef_custom_swift = '"swift-format --configuration
-$PWD/.swift-format"'
+let g:formatdef_custom_swift = '"swift-format --configuration $PWD/.swift-format"'
 let g:formatters_swift = ['custom_swift']
 
 "XML Formatter
