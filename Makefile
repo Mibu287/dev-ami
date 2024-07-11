@@ -8,7 +8,7 @@ DEFAULT_GOAL := build
 init:
 	${PACKER} init ${CONFIG_FILE}
 
-build:
+build: fmt validate
 	${PACKER} build -var-file=${VAR_FILE} ${CONFIG_FILE}
 
 validate:
