@@ -97,8 +97,7 @@ command! -nargs=? -range=% -complete=filetype -bar MAutoformat
 noremap <F3> :MAutoformat<cr>
 
 "Setup CoC tools
-hi CocInlayHint guibg=DarkGrey guifg=DarkGreen ctermbg=DarkGrey
-ctermfg=DarkGreen
+hi CocInlayHint guibg=DarkGrey guifg=DarkGreen ctermbg=DarkGrey ctermfg=DarkGreen
 inoremap <silent><expr> <c-@> coc#refresh()
 noremap <C-I> :CocCommand document.toggleInlayHint<cr>
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
