@@ -83,7 +83,7 @@ build {
           libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
           libsqlite3-dev libncurses5-dev libncursesw5-dev xz-utils \
           tk-dev libffi-dev liblzma-dev openssl htop tree neofetch \
-          ninja-build cmake moreutils netcat mold ccache
+          ninja-build cmake moreutils netcat mold ccache unzip
       EOT
     ]
   }
@@ -124,7 +124,7 @@ build {
       "sudo apt update",
       "sudo apt install -y vim",
       "curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim",
-      "vim -c '+:PlugInstall' -c '+:qa!'",
+      #"vim -c '+:PlugInstall' -c '+:qa!'",
     ]
   }
 
