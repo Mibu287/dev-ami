@@ -83,7 +83,7 @@ build {
           libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
           libsqlite3-dev libncurses5-dev libncursesw5-dev xz-utils \
           tk-dev libffi-dev liblzma-dev openssl htop tree neofetch \
-          ninja-build cmake moreutils netcat mold
+          ninja-build cmake moreutils netcat mold ccache
       EOT
     ]
   }
