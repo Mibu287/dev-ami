@@ -63,6 +63,13 @@ build {
     "source.amazon-ebs.ubuntu"
   ]
 
+  // Wait for cloud-init
+  provisioner "shell" {
+    inline = [
+      "cloud-init status --wait"
+    ]
+  }
+
   // Update and upgrade the distro
   provisioner "shell" {
     inline = [
