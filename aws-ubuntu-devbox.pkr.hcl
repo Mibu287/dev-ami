@@ -231,13 +231,11 @@ build {
   provisioner "shell" {
     inline = [
       "wget https://ziglang.org/download/${var.zig_version}/zig-linux-aarch64-${var.zig_version}.tar.xz",
-      "tar -xf zig-linux-aarch64-${var.zig_version}.tar.xz",
-      "sudo mv zig-linux-aarch64-${var.zig_version} /usr/local",
+      "ls -lha $HOME",
+      "sudo tar -C /usr/local -xf zig-linux-aarch64-${var.zig_version}.tar.xz",
       "rm -f zig-linux-aarch64-${var.zig_version}.tar.xz",
       "echo '#Zig' >> $HOME/.zshrc",
       "echo 'export PATH=/usr/local/zig-linux-aarch64-${var.zig_version}:$PATH' >> $HOME/.zshrc",
-      "source $HOME/.zshrc",
-      "zig version",
     ]
   }
 
