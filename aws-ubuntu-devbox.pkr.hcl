@@ -210,7 +210,7 @@ build {
       "echo '[ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\"' >> ~/.zshrc",
       "echo '[ -s \"$NVM_DIR/bash_completion\" ] && \\. \"$NVM_DIR/bash_completion\"' >> ~/.zshrc",
 
-      zsh -c "source $HOME/.nvm/nvm.sh && nvm install --lts && nvm use --lts",
+      "zsh -c 'source $HOME/.nvm/nvm.sh && nvm install --lts && nvm use --lts'",
     ]
   }
 
@@ -236,6 +236,18 @@ build {
       "echo '#Zig' >> $HOME/.zshrc",
       "echo 'export PATH=/usr/local/zig-linux-aarch64-${var.zig_version}:$PATH' >> $HOME/.zshrc",
     ]
+  }
+
+  provisioner "file" {
+    sources = [
+      "zig-wrappers/zig-cc",
+      "zig-wrappers/zig-cxx",
+      "zig-wrappers/zig-lib",
+      "zig-wrappers/zig-ranlib",
+      "zig-wrappers/zig-objcopy",
+      "zig-wrappers/zig-rc",
+    ]
+    destination = "/usr/local/bin/"
   }
 
   // Install Rust
