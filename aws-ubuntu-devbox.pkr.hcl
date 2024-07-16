@@ -227,17 +227,6 @@ build {
   }
 
   // Install Zig
-  provisioner "shell" {
-    inline = [
-      "wget https://ziglang.org/download/${var.zig_version}/zig-linux-aarch64-${var.zig_version}.tar.xz",
-      "ls -lha $HOME",
-      "sudo tar -C /usr/local -xf zig-linux-aarch64-${var.zig_version}.tar.xz",
-      "rm -f zig-linux-aarch64-${var.zig_version}.tar.xz",
-      "echo '#Zig' >> $HOME/.zshrc",
-      "echo 'export PATH=/usr/local/zig-linux-aarch64-${var.zig_version}:$PATH' >> $HOME/.zshrc",
-    ]
-  }
-
   provisioner "file" {
     sources = [
       "zig-wrappers/zig-cc",
@@ -247,7 +236,19 @@ build {
       "zig-wrappers/zig-objcopy",
       "zig-wrappers/zig-rc",
     ]
-    destination = "/usr/local/bin/"
+    destination = "$HOME/"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "wget https://ziglang.org/download/${var.zig_version}/zig-linux-aarch64-${var.zig_version}.tar.xz",
+      "sudo tar -C /usr/local -xf zig-linux-aarch64-${var.zig_version}.tar.xz",
+      "rm -f zig-linux-aarch64-${var.zig_version}.tar.xz",
+      "chmod +x zig-*",
+      "sudo mv zig-* /usr/local/bin",
+      "echo '#Zig' >> $HOME/.zshrc",
+      "echo 'export PATH=/usr/local/zig-linux-aarch64-${var.zig_version}:$PATH' >> $HOME/.zshrc",
+    ]
   }
 
   // Install Rust
