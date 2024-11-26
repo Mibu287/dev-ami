@@ -1,6 +1,6 @@
 PACKER=$(shell which packer)
 VAR_FILE=${PWD}/variables.pkr.hcl
-CONFIG_FILE=${PWD}/aws-ubuntu-devbox.pkr.hcl
+CONFIG_FILE=${PWD}/aws-ubuntu-arm64-devbox.pkr.hcl
 
 .DEFAULT_GOAL := build
 .PHONY: init build validate fmt
