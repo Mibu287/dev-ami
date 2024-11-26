@@ -270,7 +270,7 @@ build {
         RUSTFLAGS="-C link-arg=-fuse-ld=mold" \
         cargo install --locked \
             exa bat ripgrep fd-find du-dust \
-            tokei cargo-expand cargo-edit cargo-outdated \
+            tokei cargo-expand cargo-edit \
             cargo-tree cargo-lambda tauri-cli maturin \
             cargo-watch cargo-make cargo-generate \
             cargo-modules cargo-asm cargo-bloat cargo-deb \
