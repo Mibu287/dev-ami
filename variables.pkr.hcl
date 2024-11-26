@@ -14,10 +14,10 @@ source_image_arm64 = {
 instance_type_arm64 = "c6g.12xlarge"
 
 source_image_x86 = {
-  image_id            = "ami-0a74328eb0d575ee1"
+  image_id            = "ami-03fa85deedfcac80b",
   root_device_type    = "ebs"
   virtualization_type = "hvm"
   owner               = "099720109477"
   ssh_username        = "ubuntu"
 }
-instance_type_x86 = "c6g.12xlarge"
+instance_type_x86 = "c6a.4xlarge"
