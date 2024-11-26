@@ -23,11 +23,11 @@ variable "zig_version" {
   type = string
 }
 
-variable "source_image_arm64" {
+variable "source_image_x86" {
   type = map(string)
 }
 
-variable "instance_type_arm64" {
+variable "instance_type_x86" {
   type = string
 }
 
@@ -36,17 +36,17 @@ variable "region" {
 }
 
 source "amazon-ebs" "ubuntu" {
-  ami_name            = "awesome-devbox-{{timestamp}}"
-  instance_type_arm64 = "${var.instance_type_arm64}"
-  region              = "${var.region}"
+  ami_name          = "awesome-devbox-{{timestamp}}"
+  instance_type_x86 = "${var.instance_type_x86}"
+  region            = "${var.region}"
   source_ami_filter {
     filters = {
-      image-id            = "${var.source_image_arm64.image_id}"
-      root-device-type    = "${var.source_image_arm64.root_device_type}"
-      virtualization-type = "${var.source_image_arm64.virtualization_type}"
+      image-id            = "${var.source_image_x86.image_id}"
+      root-device-type    = "${var.source_image_x86.root_device_type}"
+      virtualization-type = "${var.source_image_x86.virtualization_type}"
     }
     most_recent = true
-    owners      = ["${var.source_image_arm64.owner}"]
+    owners      = ["${var.source_image_x86.owner}"]
   }
   launch_block_device_mappings {
     device_name = "/dev/sda1"
@@ -54,7 +54,7 @@ source "amazon-ebs" "ubuntu" {
     volume_size = 32
   }
 
-  ssh_username = "${var.source_image_arm64.ssh_username}"
+  ssh_username = "${var.source_image_x86.ssh_username}"
 }
 
 build {
@@ -141,9 +141,9 @@ build {
   // Install Golang
   provisioner "shell" {
     inline = [
-      "wget https://go.dev/dl/go${var.golang_version}.linux-arm64.tar.gz",
-      "sudo tar -C /usr/local -xzf go${var.golang_version}.linux-arm64.tar.gz",
-      "rm go${var.golang_version}.linux-arm64.tar.gz",
+      "wget https://go.dev/dl/go${var.golang_version}.linux-amd64.tar.gz",
+      "sudo tar -C /usr/local -xzf go${var.golang_version}.linux-amd64.tar.gz",
+      "rm go${var.golang_version}.linux-amd64.tar.gz",
       "mkdir -p $HOME/go/bin",
       "echo '#Golang bin' >> ~/.zshrc",
       "echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> ~/.zshrc",
@@ -274,16 +274,15 @@ build {
   // Install CUDA toolkit
   provisioner "shell" {
     inline = [
-      "wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/sbsa/cuda-ubuntu2204.pin",
+      "wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin",
       "sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600",
-      "wget https://developer.download.nvidia.com/compute/cuda/12.5.1/local_installers/cuda-repo-ubuntu2204-12-5-local_12.5.1-555.42.06-1_arm64.deb",
-      "sudo dpkg -i cuda-repo-ubuntu2204-12-5-local_12.5.1-555.42.06-1_arm64.deb",
-      "sudo cp /var/cuda-repo-ubuntu2204-12-5-local/cuda-*-keyring.gpg /usr/share/keyrings/",
+      "wget https://developer.download.nvidia.com/compute/cuda/12.6.3/local_installers/cuda-repo-ubuntu2204-12-6-local_12.6.3-560.35.05-1_amd64.deb",
+      "sudo dpkg -i cuda-repo-ubuntu2204-12-6-local_12.6.3-560.35.05-1_amd64.deb",
+      "sudo cp /var/cuda-repo-ubuntu2204-12-6-local/cuda-*-keyring.gpg /usr/share/keyrings/",
       "sudo apt-get update",
-      "sudo apt-get -y install cuda-toolkit-12-5",
-      "rm -f cuda-repo-ubuntu2204-12-5-local_12.5.1-555.42.06-1_arm64.deb",
+      "sudo apt-get -y install cuda-toolkit-12-6",
+      "rm -f  cuda-repo-ubuntu2204-12-6-local_12.6.3-560.35.05-1_amd64.deb",
       "sudo apt-get install -y nvidia-driver-555-open",
-      "sudo apt-get install -y cuda-drivers-555",
 
       "echo '#CUDA Toolkit' >> ~/.zshrc",
       "echo 'export PATH=/usr/local/cuda/bin:$PATH' >> $HOME/.zshrc",
