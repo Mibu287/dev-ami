@@ -31,14 +31,23 @@ variable "instance_type_x86" {
   type = string
 }
 
+variable "source_image_arm64" {
+  type = map(string)
+}
+
+variable "instance_type_arm64" {
+  type = string
+}
+
+
 variable "region" {
   type = string
 }
 
 source "amazon-ebs" "ubuntu" {
-  ami_name          = "awesome-devbox-{{timestamp}}"
-  instance_type_x86 = "${var.instance_type_x86}"
-  region            = "${var.region}"
+  ami_name      = "awesome-devbox-{{timestamp}}"
+  instance_type = "${var.instance_type_x86}"
+  region        = "${var.region}"
   source_ami_filter {
     filters = {
       image-id            = "${var.source_image_x86.image_id}"
